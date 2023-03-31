@@ -40,7 +40,7 @@ public class TCPClient{
                 catch(Exception e){System.out.println(e);}
                 try {TimeUnit.SECONDS.sleep(1);} catch (InterruptedException e){System.out.println(e);}
 
-
+// hello
                 }
             }
         }
