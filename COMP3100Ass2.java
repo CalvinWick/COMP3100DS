@@ -30,10 +30,26 @@ public class COMP3100Ass2{
             serverReply = redyResp.substring(0, 4); // Extracts JOB info and stores "JOBN submitTime jobID estRuntime cores"
 
 // LOOP GOES HERE 
+ 		
 
-            sendReply("QUIT\n", dataOut);
-            readResp(dataIn);
+                String getJobID[] = redyResp.split(" "); // Splits string to pass to stroe in array
+                int jobID = Integer.parseInt(getJobID[2]); // Stores jobID
 
+                sendReply("GETS All\n", dataOut); // Gets serverType, Capable core memory disks and Available core memory disks
+                String getReply = readResp(dataIn); // Sends DATA 
+                
+                String getServerCount[] = getReply.split(" "); // Splits DATA to store as String Array
+                int serverCount = Integer.parseInt(getServerCount[1]); // Stores number of jobs 
+                //System.out.println(serverCount);
+
+                sendReply("OK\n", dataOut);
+             
+            	sendReply("QUIT\n", dataOut);
+            	readResp(dataIn);
+
+
+		
+                }
             dataOut.close();
 
             socket.close();
@@ -52,6 +68,5 @@ public class COMP3100Ass2{
 public static String readResp(BufferedReader dataIn) throws IOException{
         String resp = (String)dataIn.readLine(); // Reads from server and storing as String 
         return resp;
-}
 }
 
