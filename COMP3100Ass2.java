@@ -74,8 +74,8 @@ public class COMP3100Ass2{
                         String serverType = totalServerList.get(i).split(" ")[0]; // Gets server type 
                        // System.out.println("serverType: " + serverType);
                         if (serverCores == highestCoreNum && serverType.equals(highestCoreServer)) { // Checks to see if server cores matches 		 
-                        									                                          // highest core number and matches the server
-                        									                                           // type to the highest core server 
+							// highest core number and matches the server
+							// type to the highest core server 
                             highestServerCoresList.add(totalServerList.get(i)); // Adds to highestServerList
                         }
                     }
