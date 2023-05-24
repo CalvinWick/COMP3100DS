@@ -26,13 +26,12 @@ public class COMP3100Ass2{
             readReply(dataIn);
             sendReply("REDY\n", dataOut); // Tells Server ready for data 
             
-            String redyResp = readReply(dataIn); // Server sends Job info 
-            serverReply = redyResp.substring(0, 4); // Extracts JOB info and stores "JOBN submitTime jobID estRuntime cores"
+            String response = readReply(dataIn); // Server sends Job info 
+            serverReply = response.substring(0, 4); // Extracts JOB info and stores "JOBN submitTime jobID estRuntime cores"
 
            
             while (!serverReply.equals("NONE")) { // While server is still sending messages
-
-                String getJobID[] = redyResp.split(" "); // Splits string to pass to stroe in array
+                String getJobID[] = response.split(" "); // Splits string to store in array
                 int jobID = Integer.parseInt(getJobID[2]); // Stores jobID
 
                 sendReply("GETS All\n", dataOut); // Gets serverType, Capable core memory disks and Available core memory disks
@@ -61,33 +60,32 @@ public class COMP3100Ass2{
                 for (int i = 0; i < totalServerList.size(); i++) {
                     String highestCoresArray[] = totalServerList.get(i).split(" "); // Gets the JOBN info, and stores in array
                     int coreCount = Integer.parseInt(highestCoresArray[4]); // Stores number of Cores
-            
                     if (coreCount > highestCoreNum) { // checks to see if core is bigger than 0
                         highestCoreNum = coreCount; // Stores core as highest core number 
                         highestCoreServer = highestCoresArray[0]; // Stores the highest core server from the above core  
                     }
                 }
 
-                while (isTrue) {
-
+                while (isTrue) { // Iterates over the totalServerList to find and add the servers with the 
+                		          // highest number of cores and matching server type to the highestServerCoresList
                     for (int i = 0; i < totalServerList.size(); i++) {
-                        int serverCores = Integer.parseInt(totalServerList.get(i).split(" ")[4]); // Gets number of cores for that server 
-                        System.out.println("Server Cores: " + serverCores); // Print server's core count
+                        int serverCores = Integer.parseInt(totalServerList.get(i).split(" ")[4]); // Gets number of cores from the list 
+                        //System.out.println("Server Cores: " + serverCores); 
                         String serverType = totalServerList.get(i).split(" ")[0]; // Gets server type 
-                        System.out.println("serverType: " + serverType); // Prints server type 
-                        if (serverCores == highestCoreNum && serverType.equals(highestCoreServer)) { // Checks to see if server cores matches highest core number 
-                                                                                                        // and matches the server type to the highest core server 
+                       // System.out.println("serverType: " + serverType);
+                        if (serverCores == highestCoreNum && serverType.equals(highestCoreServer)) { // Checks to see if server cores matches 		 
+                        									                                          // highest core number and matches the server
+                        									                                           // type to the highest core server 
                             highestServerCoresList.add(totalServerList.get(i)); // Adds to highestServerList
                         }
                     }
-
-                    isTrue = false;
+                    isTrue = false; // Stops it from iterating again 
                 }
 
                 if (serverReply.equals("JOBN")) { // Check if server is sending JOBN
                     sendReply("SCHD " + jobID + " " + highestCoreServer + " " + sID + "\n", dataOut); // Schedule job 
                     readReply(dataIn);   // Read server response 
-                    System.out.println(dataIn);
+                    //System.out.println(dataIn);
                     sID++; // Increment sID
                 }
 
@@ -96,15 +94,13 @@ public class COMP3100Ass2{
                 }
 
                 sendReply("REDY\n", dataOut); // Ready for next job 
-                redyResp = readReply(dataIn); // Reads server response 
-                serverReply = redyResp.substring(0, 4); // Stores the response here 
+                response = readReply(dataIn); // Reads server response 
+                serverReply = response.substring(0, 4); // Stores the response here 
             }
-
             sendReply("QUIT\n", dataOut); // Quits the connection 
             readReply(dataIn); // Server acknowledges 
 
             dataOut.close(); // Closes stream 
-
             socket.close(); // Closes socket connection 
         
         } catch (Exception e) { // Error catching 
@@ -112,15 +108,15 @@ public class COMP3100Ass2{
         }
     }
 
-// Send to server
+    // Send to server
 public static void sendReply(String reply, DataOutputStream dataOut) throws IOException{
         dataOut.write(reply.getBytes()); // Send reply to server 
         dataOut.flush(); // Flushes output so nothing left 
-}
+	}
 
 // Read from Server
 public static String readReply(BufferedReader dataIn) throws IOException{
         String resp = (String)dataIn.readLine(); // Reads from server and storing as String 
         return resp;
+	}
 }
-
