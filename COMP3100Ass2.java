@@ -11,9 +11,8 @@ public class COMP3100Ass2{
     private static String highestCoreServer = null;
     private static String serverReply = null;
     private static List<String> highestServerCoresList = new ArrayList<>();
-    private static int quantum = 0; 
-    private static List<Integer> serverWeights = new ArrayList<>();
 
+	
     public static void main(String[] args) {
 
         try {
@@ -35,7 +34,7 @@ public class COMP3100Ass2{
                 String getJobID[] = response.split(" "); // Splits string to store in array
                 int jobID = Integer.parseInt(getJobID[2]); // Stores jobID
 
-                sendReply("GETS Capable\n", dataOut); // Gets serverType, Capable core memory disks and Available core memory disks
+                sendReply("GETS All\n", dataOut); // Gets serverType, Capable core memory disks and Available core memory disks
                 String getReply = readReply(dataIn); // Sends DATA 
 
                 while (serverStatus) { // Only allows it to run once 
